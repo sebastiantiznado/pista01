@@ -148,18 +148,36 @@
 <body>
 
     <main class="contenedor">
+        
+<div class="audio-contenedor" id="audioContenedor">
+    <div class="audio-titulo">
+        ARCHIVO DE AUDIO // PISTA 001
+    </div>
 
-        <!-- AUDIO VISIBLE ANTES DE LA CONTRASEÑA -->
-        <div class="audio-contenedor" id="audioContenedor">
-            <div class="audio-titulo">
-                ARCHIVO DE AUDIO // PISTA 001
-            </div>
+    <audio id="audio" controls preload="auto">
+        <source src="./Pista01.mp3" type="audio/mpeg">
+        Tu navegador no puede reproducir este audio.
+    </audio>
 
-            <audio id="audio" controls preload="metadata">
-                <source src="Pista01.mp3" type="audio/mpeg">
-                Tu navegador no puede reproducir este audio.
-            </audio>
-        </div>
+    <p id="estadoAudio" style="font-size:12px; color:#888;">
+        Esperando reproducción...
+    </p>
+</div>
+
+<script>
+const audio = document.getElementById("audio");
+const estado = document.getElementById("estadoAudio");
+
+audio.addEventListener("canplay", () => {
+    estado.textContent = "Audio listo para reproducir.";
+});
+
+audio.addEventListener("error", () => {
+    estado.textContent =
+        "Error: no se encuentra el audio o el formato no es compatible.";
+});
+</script>
+
 
         <!-- CONTRASEÑA -->
         <form id="formulario">
