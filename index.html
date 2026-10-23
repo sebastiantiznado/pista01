@@ -1,49 +1,261 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso</title>
+    <title>Expediente 001</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0a0a0a;
+            background: #050505;
+            color: #aaa;
+            padding: 25px;
         }
 
-        input {
-            width: 250px;
-            padding: 14px;
-            background: #151515;
-            border: 1px solid #333;
-            border-radius: 6px;
-            color: white;
-            font-size: 15px;
+        .contenedor {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .audio-contenedor {
+            margin-bottom: 35px;
+            animation: aparecer 2s ease;
+        }
+
+        .audio-titulo {
+            margin-bottom: 15px;
+            color: #6d2929;
+            font-family: monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+        }
+
+        audio {
+            width: 100%;
+            max-width: 350px;
+            height: 40px;
+            opacity: 0.85;
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: #171313;
+        }
+
+        #formulario {
+            width: 100%;
+        }
+
+        #contrasena {
+            width: 100%;
+            padding: 18px;
+            background: #101010;
+            border: 1px solid #292323;
+            border-radius: 2px;
+            color: #ddd;
+            font-family: monospace;
+            font-size: 16px;
             text-align: center;
             outline: none;
         }
 
-        input:focus {
-            border-color: #666;
+        #contrasena:focus {
+            border-color: #542020;
         }
 
-        input::placeholder {
-            color: #777;
+        #contrasena::placeholder {
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 3px;
+        }
+
+        .contenido {
+            display: none;
+            animation: aparecer 3s ease forwards;
+        }
+
+        .linea {
+            width: 60px;
+            height: 1px;
+            margin: 0 auto 30px;
+            background: #641d1d;
+            box-shadow: 0 0 8px #641d1d;
+        }
+
+        .titulo {
+            margin-bottom: 25px;
+            color: #8e2929;
+            font-family: Georgia, serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .texto {
+            color: #999;
+            font-family: Georgia, serif;
+            font-size: clamp(16px, 3.5vw, 20px);
+            line-height: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .texto strong {
+            color: #b33a3a;
+            font-weight: normal;
+        }
+
+        .simbolo {
+            margin-top: 35px;
+            color: #5e2020;
+            font-size: 25px;
+        }
+
+        .error {
+            display: none;
+            margin-top: 15px;
+            color: #8e2929;
+            font-family: monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                filter: blur(8px);
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <input
-        type="password"
-        placeholder="Contraseña"
-        aria-label="Contraseña"
-    >
+    <main class="contenedor">
+
+        <!-- AUDIO VISIBLE ANTES DE LA CONTRASEÑA -->
+        <div class="audio-contenedor" id="audioContenedor">
+            <div class="audio-titulo">
+                ARCHIVO DE AUDIO // PISTA 001
+            </div>
+
+            <audio id="audio" controls preload="metadata">
+                <source src="Pista01.mp3" type="audio/mpeg">
+                Tu navegador no puede reproducir este audio.
+            </audio>
+        </div>
+
+        <!-- CONTRASEÑA -->
+        <form id="formulario">
+            <input
+                type="password"
+                id="contrasena"
+                placeholder="CONTRASEÑA"
+                aria-label="Contraseña"
+                autocomplete="off"
+                autofocus
+            >
+
+            <p class="error" id="error">
+                CONTRASEÑA INCORRECTA
+            </p>
+        </form>
+
+        <!-- MENSAJE DESBLOQUEADO -->
+        <section class="contenido" id="contenido">
+
+            <div class="linea"></div>
+
+            <div class="titulo">
+                Acceso concedido
+            </div>
+
+            <div class="texto">
+                Correcto. La respuesta es el
+                <strong>cero</strong>.
+
+                <br><br>
+
+                En el expediente hay tres nombres,
+                pero las fotografías parecen mostrar
+                una presencia adicional.
+
+                <br><br>
+
+                <strong>No hay omega sin alfa.</strong>
+
+                <br>
+
+                Encuentra el sobre negro donde todo empezó.
+            </div>
+
+            <div class="simbolo">†</div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const formulario = document.getElementById("formulario");
+        const entrada = document.getElementById("contrasena");
+        const contenido = document.getElementById("contenido");
+        const error = document.getElementById("error");
+        const audioContenedor = document.getElementById("audioContenedor");
+
+        let accesoConcedido = false;
+
+        function comprobarContrasena() {
+            if (accesoConcedido) {
+                return;
+            }
+
+            if (entrada.value.trim() === "0") {
+                accesoConcedido = true;
+
+                formulario.style.display = "none";
+                audioContenedor.style.display = "none";
+                contenido.style.display = "block";
+                error.style.display = "none";
+
+            } else {
+                entrada.value = "";
+                error.style.display = "block";
+                entrada.focus();
+            }
+        }
+
+        formulario.addEventListener("submit", function(event) {
+            event.preventDefault();
+            comprobarContrasena();
+        });
+
+        entrada.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                comprobarContrasena();
+            }
+        });
+
+        window.addEventListener("load", function() {
+            entrada.focus();
+        });
+    </script>
 
 </body>
 </html>
